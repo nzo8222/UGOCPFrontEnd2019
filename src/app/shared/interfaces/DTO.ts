@@ -8,3 +8,16 @@ export interface RegistroUsuarioDTO {
     password: string;
     email: string;
 }
+export interface LoginDTO {
+    usuario: string;
+    password: string;
+    recordar: boolean;
+}
+
+export interface SessionModel {
+    userId: string;
+    expiresIn: number;
+    jwtToken: string;
+    email: string;
+    role: string;
+}
