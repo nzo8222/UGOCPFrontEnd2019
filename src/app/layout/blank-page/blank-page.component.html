@@ -1,0 +1,29 @@
+<div class="row">
+    <div class="col-md-6"> 
+      <form [formGroup]="formaUsuario" (ngSubmit)="onSubmitFormaUsuario()">
+        <div class="form-group">
+          <label for="estado">Estado</label>
+          <kendo-autocomplete id="estado" name="estado" [data]="lstEstado" [placeholder]="'Seleccione un estado'"
+        [valueField]="'nombre'" ngModel aria-required="Introdusca el estado" formControlName="estado">
+      </kendo-autocomplete>
+          <span *ngIf="!formaUsuario.get('estado').valid && formaUsuario.get('estado').touched"
+            class="help-block">Ingresa un Estado</span>
+        </div>
+        <div class="form-group">
+          <label for="municipio">Codigo de producto</label>
+          <kendo-autocomplete id="municipio" name="municipio" [data]="lstEstado" [placeholder]="'Seleccione un municipio'"
+        [valueField]="'nombre'" ngModel aria-required="Introdusca el municipio" formControlName="municipio">
+      </kendo-autocomplete>
+          <button class="btn btn-primary" (click)="OnClickObtenerMunicipios()">Obtener municipios</button>
+          <span *ngIf="!formaUsuario.get('municipio').valid && formaUsuario.get('municipio').touched"
+            class="help-block">Ingresa un municipio valido</span>
+        </div>
+        <div class="form-inline">
+          <button class="btn btn-primary" type="submit" [disabled]="!formaUsuario.valid ">Guardar datos</button>
+        </div>   
+
+       
+  
+      </form>
+    </div>
+</div>

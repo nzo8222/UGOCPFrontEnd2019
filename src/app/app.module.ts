@@ -10,6 +10,8 @@ import { AppComponent } from './app.component';
 import { AuthGuard } from './shared';
 import { FacadeService } from './shared/services/facade.service';
 import { AuthService } from './shared/guard/auth.service';
+import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
+
 
 
 @NgModule({
@@ -19,7 +21,8 @@ import { AuthService } from './shared/guard/auth.service';
         BrowserAnimationsModule,
         HttpClientModule,
         LanguageTranslationModule,
-        AppRoutingModule
+        AppRoutingModule,
+        DropDownsModule
     ],
     declarations: [AppComponent],
     providers: [AuthGuard, FacadeService, AuthService],

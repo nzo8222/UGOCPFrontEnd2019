@@ -21,3 +21,11 @@ export interface SessionModel {
     email: string;
     role: string;
 }
+export interface EstadoDTO {
+    nombre: string;
+    id: number;
+}
+
+export interface DTOidEstado{
+    id:number;
+}
