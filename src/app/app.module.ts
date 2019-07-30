@@ -11,6 +11,7 @@ import { AuthGuard } from './shared';
 import { FacadeService } from './shared/services/facade.service';
 import { AuthService } from './shared/guard/auth.service';
 import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
+import { ToastrModule } from 'ngx-toastr';
 
 
 
@@ -22,7 +23,8 @@ import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
         HttpClientModule,
         LanguageTranslationModule,
         AppRoutingModule,
-        DropDownsModule
+        DropDownsModule,
+        ToastrModule.forRoot()
     ],
     declarations: [AppComponent],
     providers: [AuthGuard, FacadeService, AuthService],

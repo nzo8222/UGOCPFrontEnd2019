@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { RespuestaServidor } from '../interfaces/response';
-import { LoginDTO, RegistroUsuarioDTO, DTOidEstado } from '../interfaces/DTO';
+import { LoginDTO, RegistroUsuarioDTO, DTOidEstado, DTOidMunicipio } from '../interfaces/DTO';
 import { AuthService } from '../guard/auth.service';
 
 
@@ -97,7 +97,10 @@ export class FacadeService {
   public GetEstados(): Observable<RespuestaServidor> {
     return this.request.doGet<RespuestaServidor>(`Localidad/GetEstados`);
   }
-  public PostInventarioFisico(idEstado: DTOidEstado): Observable<RespuestaServidor>{
+  public GetMunicipiosPorIdEstado(idEstado: DTOidEstado): Observable<RespuestaServidor>{
     return this.request.doPost<RespuestaServidor>(`Localidad/GetMunicipios`, idEstado);
+  }
+  public GetLocalidadPorIdMunicipio(idMunicipio: DTOidMunicipio): Observable<RespuestaServidor>{
+    return this.request.doPost<RespuestaServidor>(`Localidad/GetLocalidades`, idMunicipio);
   }
 }

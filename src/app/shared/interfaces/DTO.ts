@@ -29,3 +29,17 @@ export interface EstadoDTO {
 export interface DTOidEstado{
     id:number;
 }
+
+export interface MunicipioDTO{
+    id:number;
+    nombre:string;
+}
+
+export interface LocalidadDTO{
+    id:number;
+    nombre:string;
+}
+
+export interface DTOidMunicipio{
+    id:number;
+}
