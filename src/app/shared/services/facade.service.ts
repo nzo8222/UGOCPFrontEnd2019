@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { RespuestaServidor } from '../interfaces/response';
-import { LoginDTO, RegistroUsuarioDTO, DTOidEstado, DTOidMunicipio } from '../interfaces/DTO';
+import { LoginDTO, RegistroUsuarioDTO, DTOidEstado, DTOidMunicipio, DTODatosUsuario } from '../interfaces/DTO';
 import { AuthService } from '../guard/auth.service';
 
 
@@ -102,5 +102,8 @@ export class FacadeService {
   }
   public GetLocalidadPorIdMunicipio(idMunicipio: DTOidMunicipio): Observable<RespuestaServidor>{
     return this.request.doPost<RespuestaServidor>(`Localidad/GetLocalidades`, idMunicipio);
+  }
+  public PostUserData(DatosUsuario: DTODatosUsuario): Observable<RespuestaServidor> {
+    return this.request.doPost<RespuestaServidor>(`Users/UpdateUser`, DatosUsuario);
   }
 }

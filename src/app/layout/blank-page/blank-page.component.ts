@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { EstadoDTO, DTOidEstado, MunicipioDTO, LocalidadDTO, DTOidMunicipio } from 'src/app/shared/interfaces/DTO';
+import { EstadoDTO, DTOidEstado, MunicipioDTO, LocalidadDTO, DTOidMunicipio, DTODatosUsuario } from 'src/app/shared/interfaces/DTO';
 import { FacadeService } from 'src/app/shared/services/facade.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
+import { AuthService } from 'src/app/shared/guard/auth.service';
 
 @Component({
     selector: 'app-blank-page',
@@ -13,9 +14,13 @@ export class BlankPageComponent implements OnInit {
    public lstEstado: EstadoDTO[];
    public lstMunicipios: MunicipioDTO[];
    public lstLocalidad: LocalidadDTO[];
+   generos = ['Masculino', 'Femenino'];
+   estadoCivil = ['Casado', 'Soltero'];
     formaUsuario: FormGroup;
+
     //private notifications: NotificationService
-    constructor(private facadeService: FacadeService) {}
+    constructor(private facadeService: FacadeService, private authService: AuthService) {}
+
     OnClickObtenerLocalidad(){
       if(!this.lstMunicipios.find(m => m.nombre === this.formaUsuario.value.municipio))
       {
@@ -41,9 +46,21 @@ export class BlankPageComponent implements OnInit {
     ngOnInit() {
         this.loadEstadoList();
         this.formaUsuario = new FormGroup({
+            'nombreCompletoUsuario': new FormControl(null, [Validators.required]),
             'estado': new FormControl(null, [Validators.required]),
             'municipio': new FormControl(null, [Validators.required]),
-            'localidad': new FormControl(null, [Validators.required])
+            'localidad': new FormControl(null, [Validators.required]),
+            'direccion': new FormControl(null, [Validators.required]),
+            'telefono': new FormControl(null, [Validators.required]),
+            'celular': new FormControl(null, [Validators.required]),
+            'fechaDeNacimiento': new FormControl(null, [Validators.required]),
+            'ocupacion': new FormControl(null, [Validators.required]),
+            'cargo': new FormControl(null, [Validators.required]),
+            'genero': new FormControl(null, [Validators.required]),
+            'estadoCivil': new FormControl(null, [Validators.required]),
+            'CURP': new FormControl(null, [Validators.required]),
+            'ClaveElector': new FormControl(null, [Validators.required]),
+            'ClaveINE': new FormControl(null, [Validators.required])
         })
     }
     loadEstadoList(){
@@ -83,6 +100,35 @@ export class BlankPageComponent implements OnInit {
             });
       }  
     onSubmitFormaUsuario(){
-
+      if(!this.formaUsuario.valid){
+        return;
+      }
+      let Localidad = this.lstLocalidad.find(e => e.nombre === this.formaUsuario.value.localidad);
+     
+      const valoresUsuario :DTODatosUsuario = 
+      {
+        id : this.authService.getUserId(),
+        fullName : this.formaUsuario.value.nombreCompletoUsuario,
+        address : this.formaUsuario.value.direccion,
+        idLocalidad : Localidad.id,
+        cellPhone : this.formaUsuario.value.celular,
+        phoneNumber : this.formaUsuario.value.telefono,
+        dateOfBirth : this.formaUsuario.value.fechaDeNacimiento,
+        gender : this.formaUsuario.value.genero,
+        civilStatus : this.formaUsuario.value.estadoCivil,
+        ocupation : this.formaUsuario.value.ocupacion,
+        curp : this.formaUsuario.value.curp,
+        claveDeElector: this.formaUsuario.value.claveDeElector,
+        numberINECredential: this.formaUsuario.value.ClaveINE
+      }
+      this.facadeService.PostUserData(valoresUsuario).subscribe(
+        res => { 
+          if(res.exitoso){
+            console.log('Datos guardados correctamente.');
+          }else{
+            console.log(res.mensajeError);
+          }
+        }
+      )
     }
 }

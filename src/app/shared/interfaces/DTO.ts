@@ -43,3 +43,19 @@ export interface LocalidadDTO{
 export interface DTOidMunicipio{
     id:number;
 }
+
+export interface DTODatosUsuario{
+    id: string;
+    fullName:string;
+    address:string;
+    idLocalidad: number;
+    cellPhone: number;
+    phoneNumber: number;
+    dateOfBirth: Date;
+    gender: string;
+    civilStatus: string;
+    ocupation: string;
+    curp: string;
+    claveDeElector: string;
+    numberINECredential: string;
+}
