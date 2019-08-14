@@ -1,6 +1,6 @@
 <nav class="sidebar" [ngClass]="{sidebarPushRight: isActive, collapsed: collapsed}">
     <div class="list-group">
-        <a routerLink="/dashboard" [routerLinkActive]="['router-link-active']" class="list-group-item">
+        <!-- <a routerLink="/dashboard" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-dashboard"></i>&nbsp;
             <span>{{ 'Dashboard' | translate }}</span>
         </a>
@@ -55,21 +55,29 @@
                     </li>
                 </ul>
             </li>
-        </div>
+        </div> -->
         <a [routerLink]="['/blank-page']" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-file-o"></i>&nbsp;
-            <span>{{ 'Blank Page' | translate }}</span>
+            <span>{{ 'Datos productor' }}</span>
         </a>
-        <a href="http://www.strapui.com/" class="list-group-item">
+        <a [routerLink]="['/empresa']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-file-o"></i>&nbsp;
+            <span>{{ 'Datos empresa' }}</span>
+        </a>
+        <!-- <a *ngIf="user.role === 'administrator'" [routerLink]="['/registro']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-file-o"></i>&nbsp;
+            <span>{{ 'Alta administrador' }}</span>
+        </a> -->
+        <!-- <a href="http://www.strapui.com/" class="list-group-item">
             <i class="fa fa-caret-down"></i>&nbsp;
             <span>{{ 'More Themes' | translate }}</span>
-        </a>
+        </a> -->
 
         <div class="header-fields">
-            <a (click)="rltAndLtr()" class="list-group-item">
+            <!-- <a (click)="rltAndLtr()" class="list-group-item">
                 <span><i class="fa fa-arrows-h"></i>&nbsp; RTL/LTR</span>
-            </a>
-            <div class="nested-menu">
+            </a> -->
+            <!-- <div class="nested-menu">
                 <a class="list-group-item" (click)="addExpandClass('languages')">
                     <span><i class="fa fa-language"></i>&nbsp; {{ 'Language' | translate }} <b class="caret"></b></span>
                 </a>
@@ -112,8 +120,8 @@
                         </li>
                     </ul>
                 </li>
-            </div>
-            <div class="nested-menu">
+            </div> -->
+            <!-- <div class="nested-menu">
                 <a class="list-group-item" (click)="addExpandClass('profile')">
                     <span><i class="fa fa-user"></i>&nbsp; John Smith</span>
                 </a>
@@ -141,7 +149,7 @@
                         </li>
                     </ul>
                 </li>
-            </div>
+            </div> -->
         </div>
     </div>
     <div class="toggle-button" [ngClass]="{collapsed: collapsed}" (click)="toggleCollapsed()">

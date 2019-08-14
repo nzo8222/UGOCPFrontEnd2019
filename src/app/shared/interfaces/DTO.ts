@@ -55,7 +55,36 @@ export interface DTODatosUsuario{
     gender: string;
     civilStatus: string;
     ocupation: string;
+    charge: string;
     curp: string;
     claveDeElector: string;
     numberINECredential: string;
+    role: string;
+}
+
+export interface DTOEmpresa{
+    idCompany: string;
+    name: string;
+    phoneNumber: number;
+    address: string;
+    idLocalidad: number;
+    lstProduct: Product[];
+}
+
+export interface Product{
+    idProduct: string;
+    claveProductoServicio: number;
+    name: String;
+    calidad: String;
+    startOfHarvest: Date;
+    endOfHarvest: Date;
+    cuantityInKG: number;
+}
+
+export interface DTOPostDatosEmpresa{
+    idUsuario: string;
+    name: string;
+    phoneNumber: number;
+    address: string;
+    idLocalidad: number;
 }

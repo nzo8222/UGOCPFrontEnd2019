@@ -1,6 +1,8 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { AuthService } from 'src/app/shared/guard/auth.service';
+import { SessionModel } from 'src/app/shared/interfaces/DTO';
 
 @Component({
     selector: 'app-sidebar',
@@ -12,10 +14,11 @@ export class SidebarComponent implements OnInit {
     collapsed: boolean;
     showMenu: string;
     pushRightClass: string;
+    user: SessionModel;
 
     @Output() collapsedEvent = new EventEmitter<boolean>();
 
-    constructor(private translate: TranslateService, public router: Router) {
+    constructor(private translate: TranslateService, public router: Router, private authService: AuthService) {
         this.router.events.subscribe(val => {
             if (
                 val instanceof NavigationEnd &&
@@ -32,6 +35,9 @@ export class SidebarComponent implements OnInit {
         this.collapsed = false;
         this.showMenu = '';
         this.pushRightClass = 'push-right';
+
+        // Obtiene sesión actual.
+        this.authService.getRole();
     }
 
 

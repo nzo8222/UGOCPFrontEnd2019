@@ -4,83 +4,84 @@ import { Subject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class AuthService {
 
- // LocalStorage value names
- private sessionKey = 'session';
+    // LocalStorage value names
+    private sessionKey = 'session';
 
- private subjectLogin = new Subject<any>();
- private subjectLogout = new Subject<any>();
+    private subjectLogin = new Subject<any>();
+    private subjectLogout = new Subject<any>();
 
- constructor(private router: Router) { }
+    constructor(private router: Router) { }
 
- public getLoginObservable(): Observable<any> {
-     return this.subjectLogin.asObservable();
- }
+    public getLoginObservable(): Observable<any> {
+        return this.subjectLogin.asObservable();
+    }
 
- public getLogoutObservable(): Observable<any> {
-     return this.subjectLogout.asObservable();
- }
+    public getLogoutObservable(): Observable<any> {
+        return this.subjectLogout.asObservable();
+    }
 
- public navigateHome() {
-     this.router.navigate(['/dashboard']);
- }
+    public navigateHome() {
+        this.router.navigate(['/dashboard']);
+    }
 
- public navigateLogin() {
-     this.router.navigate(['/home']);
- }
+    public navigateLogin() {
+        this.router.navigate(['/home']);
+    }
 
- public setSession(session: SessionModel) {
+    public setSession(session: SessionModel) {
 
-     const sessionParsed = JSON.stringify(session);
-     // Sets session model
-     localStorage.setItem(this.sessionKey, sessionParsed);
+        const sessionParsed = JSON.stringify(session);
+        // Sets session model
+        localStorage.setItem(this.sessionKey, sessionParsed);
 
-     // Navigates to home
-     this.navigateHome();
- }
+        // Navigates to home
+        this.navigateHome();
+    }
 
- public clearSession() {
-     // Clears session
-     localStorage.clear();
+    public clearSession() {
+        // Clears session
+        localStorage.clear();
 
-     // Logout event
-     this.subjectLogout.next(null);
- }
+        // Logout event
+        this.subjectLogout.next(null);
+    }
 
- public isAuthenticated(): boolean {
-     if (!this.getSession()) { return false; }
-     return true;
- }
+    public isAuthenticated(): boolean {
+        if (!this.getSession()) { return false; }
+        return true;
+    }
 
- public getSession(): SessionModel {
-     const sessionParsed = localStorage.getItem(this.sessionKey);
-     if (sessionParsed == null) { return null; }
-     return JSON.parse(sessionParsed);
- }
+    public getSession(): SessionModel {
+        const sessionParsed = localStorage.getItem(this.sessionKey);
+        if (!sessionParsed) { return null; }
+        return JSON.parse(sessionParsed);
+    }
 
- public getToken(): string {
-     const model = this.getSession();
-     return model !== null ? model.jwtToken : '';
- }
- public getUserId(): string {
-     const model = this.getSession();
-     return model !== null ? model.userId : '';
- }
+    public getToken(): string {
+        const model = this.getSession();
+        return model ? model.jwtToken : '';
+    }
+    public getUserId(): string {
+        const model = this.getSession();
+        return model ? model.userId : '';
+    }
 
- public getEmail(): string {
-     const model = this.getSession();
-     return model !== null ? model.email : '';
- }
+    public getEmail(): string {
+        const model = this.getSession();
+        return model ? model.email : '';
+    }
 
- public getExpiration(): number {
-     const model = this.getSession();
-     return model !== null ? model.expiresIn : 0;
- }
+    public getExpiration(): number {
+        const model = this.getSession();
+        return model ? model.expiresIn : 0;
+    }
 
- public getRole(): string {
-     const model = this.getSession();
-     return model !== null ? model.role : 'customer';
- }}
+    public getRole(): string {
+        const model = this.getSession();
+        return model ? model.role : 'customer';
+    }
+}

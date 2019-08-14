@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { RespuestaServidor } from '../interfaces/response';
-import { LoginDTO, RegistroUsuarioDTO, DTOidEstado, DTOidMunicipio, DTODatosUsuario } from '../interfaces/DTO';
+import { LoginDTO, RegistroUsuarioDTO, DTOidEstado, DTOidMunicipio, DTODatosUsuario, DTOPostDatosEmpresa } from '../interfaces/DTO';
 import { AuthService } from '../guard/auth.service';
 
 
@@ -105,5 +105,14 @@ export class FacadeService {
   }
   public PostUserData(DatosUsuario: DTODatosUsuario): Observable<RespuestaServidor> {
     return this.request.doPost<RespuestaServidor>(`Users/UpdateUser`, DatosUsuario);
+  }
+  public GetListaProductosServiciosSAT(filtro: string): Observable<RespuestaServidor> {
+    return this.request.doGet<RespuestaServidor>(`Products/${filtro}`);
+  }
+  public GetListaEmpresas(IdUsuario: string): Observable<RespuestaServidor> {
+    return this.request.doGet<RespuestaServidor>(`Empresa/${IdUsuario}`);
+  }
+  public PostEmpresaData(DatosEmpresa: DTOPostDatosEmpresa): Observable<RespuestaServidor> {
+    return this.request.doPost<RespuestaServidor>(`Empresa/PostEmpresa`, DatosEmpresa);
   }
 }

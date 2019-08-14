@@ -18,15 +18,15 @@
                     {{ 'Download Now' | translate }}
                 </a>
             </li> &nbsp; -->
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a href="javascript:void(0)" class="nav-link mt-1"
                     style="padding: 0.375rem 1rem !important; border-color: #999;"
                     (click)="rltAndLtr()"
                 >
                     RTL/LTR
                 </a>
-            </li> &nbsp;
-            <li class="nav-item dropdown" ngbDropdown>
+            </li> &nbsp; -->
+            <!-- <li class="nav-item dropdown" ngbDropdown>
                 <a class="nav-link" href="javascript:void(0)" ngbDropdownToggle>
                     <i class="fa fa-envelope"></i> <b class="caret"></b><span class="sr-only">(current)</span>
                 </a>
@@ -64,8 +64,8 @@
                         </div>
                     </li>
                 </ul>
-            </li>
-            <li class="nav-item dropdown" ngbDropdown>
+            </li> -->
+            <!-- <li class="nav-item dropdown" ngbDropdown>
                 <a href="javascript:void(0)" class="nav-link" ngbDropdownToggle>
                     <i class="fa fa-bell"></i> <b class="caret"></b><span class="sr-only">(current)</span>
                 </a>
@@ -84,8 +84,8 @@
                         {{ 'View All' | translate }}
                     </a>
                 </div>
-            </li>
-            <li class="nav-item dropdown" ngbDropdown>
+            </li> -->
+            <!-- <li class="nav-item dropdown" ngbDropdown>
                 <a href="javascript:void(0)" class="nav-link" ngbDropdownToggle>
                     <i class="fa fa-language"></i> {{ 'Language' | translate }} <b class="caret"></b>
                 </a>
@@ -115,7 +115,7 @@
                         {{ 'Simplified Chinese' | translate }}
                     </a>
                 </div>
-            </li>
+            </li> -->
             <li class="nav-item dropdown" ngbDropdown>
                 <a href="javascript:void(0)" class="nav-link" ngbDropdownToggle>
                     <i class="fa fa-user"></i> {{userName}} <b class="caret"></b>
@@ -124,12 +124,12 @@
                     <a class="dropdown-item" [routerLink]="['/blank-page']">
                         <i class="fa fa-fw fa-user"></i> {{ 'Profile' | translate }}
                     </a>
-                    <a class="dropdown-item" href="javascript:void(0)">
+                    <!-- <a class="dropdown-item" href="javascript:void(0)">
                         <i class="fa fa-fw fa-envelope"></i> {{ 'Inbox' | translate }}
                     </a>
                     <a class="dropdown-item" href="javascript:void(0)">
                         <i class="fa fa-fw fa-gear"></i> {{ 'Settings' | translate }}
-                    </a>
+                    </a> -->
                     <a class="dropdown-item" [routerLink]="['/login']" (click)="onLoggedout()">
                         <i class="fa fa-fw fa-power-off"></i> {{ 'Log Out' | translate }}
                     </a>

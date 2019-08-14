@@ -18,13 +18,12 @@ export class BlankPageComponent implements OnInit {
    estadoCivil = ['Casado', 'Soltero'];
     formaUsuario: FormGroup;
 
-    //private notifications: NotificationService
-    constructor(private facadeService: FacadeService, private authService: AuthService) {}
+    constructor(private facadeService: FacadeService, private authService: AuthService, private notifications: NotificationService) {}
 
     OnClickObtenerLocalidad(){
       if(!this.lstMunicipios.find(m => m.nombre === this.formaUsuario.value.municipio))
       {
-        // this.notifications.showError("Seleccione un municipio valido.");
+         this.notifications.showError("Seleccione un municipio valido.");
         return;
       }
       let Municipio = this.lstMunicipios.find(e => e.nombre === this.formaUsuario.value.municipio);
@@ -34,12 +33,12 @@ export class BlankPageComponent implements OnInit {
       this.facadeService.GetLocalidadPorIdMunicipio(idMunicipio).subscribe(
         res => {
           if(!res.exitoso){
-            //this.notifications.showError(res.mensajeError);
+            this.notifications.showError(res.mensajeError);
             return;
           }
           const listaLocalidades = res.payload as LocalidadDTO[];
           this.lstLocalidad = listaLocalidades;
-          // this.notifications.showSuccess('Se cargaron las localidades');
+         this.notifications.showSuccess('Se cargaron las localidades');
         }
       )
     }
@@ -67,7 +66,7 @@ export class BlankPageComponent implements OnInit {
         this.facadeService.GetEstados().subscribe(
           res => {
             if(!res.exitoso){
-            //   this.notifications.showError(res.mensajeError);
+              this.notifications.showError(res.mensajeError);
               console.log("Error obteniendo estados.");
               return;
             }
@@ -75,13 +74,13 @@ export class BlankPageComponent implements OnInit {
     
             this.lstEstado = estados;
     
-            // this.notifications.showSuccess('Se cargaron las listas');
+            this.notifications.showSuccess('Se cargaron las listas');
           });
       }
       OnClickObtenerMunicipios(){
           if(!this.lstEstado.find(e => e.nombre === this.formaUsuario.value.estado))
           {
-            // this.notifications.showError("Seleccione un estado valido.");
+             this.notifications.showError("Seleccione un estado valido.");
             return;
           }
           let Estado = this.lstEstado.find(e => e.nombre === this.formaUsuario.value.estado);
@@ -91,12 +90,12 @@ export class BlankPageComponent implements OnInit {
           this.facadeService.GetMunicipiosPorIdEstado(idEstado).subscribe(
             res => {
               if(!res.exitoso){
-                // this.notifications.showError(res.mensajeError);
+                this.notifications.showError(res.mensajeError);
                 return;
               }
               const listaMunicipios = res.payload as MunicipioDTO[];
               this.lstMunicipios = listaMunicipios;
-              // this.notifications.showSuccess('Se cargaron los municipios');
+              this.notifications.showSuccess('Se cargaron los municipios');
             });
       }  
     onSubmitFormaUsuario(){
@@ -117,17 +116,21 @@ export class BlankPageComponent implements OnInit {
         gender : this.formaUsuario.value.genero,
         civilStatus : this.formaUsuario.value.estadoCivil,
         ocupation : this.formaUsuario.value.ocupacion,
-        curp : this.formaUsuario.value.curp,
-        claveDeElector: this.formaUsuario.value.claveDeElector,
-        numberINECredential: this.formaUsuario.value.ClaveINE
+        charge : this.formaUsuario.value.cargo,
+        curp : this.formaUsuario.value.CURP,
+        claveDeElector: this.formaUsuario.value.ClaveElector,
+        numberINECredential: this.formaUsuario.value.ClaveINE,
+        role: "Usuario"
       }
       this.facadeService.PostUserData(valoresUsuario).subscribe(
         res => { 
           if(res.exitoso){
-            console.log('Datos guardados correctamente.');
+            this.notifications.showSuccess('Datos guardados correctamente.');
+            this.formaUsuario.reset();
           }else{
-            console.log(res.mensajeError);
+            this.notifications.showError(res.mensajeError);
           }
+          
         }
       )
     }

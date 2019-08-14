@@ -10,8 +10,10 @@ import { AppComponent } from './app.component';
 import { AuthGuard } from './shared';
 import { FacadeService } from './shared/services/facade.service';
 import { AuthService } from './shared/guard/auth.service';
-import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
 import { ToastrModule } from 'ngx-toastr';
+import { NotificationService } from './shared/services/notification.service';
+import { GridModule } from '@progress/kendo-angular-grid';
+
 
 
 
@@ -23,11 +25,11 @@ import { ToastrModule } from 'ngx-toastr';
         HttpClientModule,
         LanguageTranslationModule,
         AppRoutingModule,
-        DropDownsModule,
-        ToastrModule.forRoot()
+        ToastrModule.forRoot(),
+        GridModule
     ],
     declarations: [AppComponent],
-    providers: [AuthGuard, FacadeService, AuthService],
+    providers: [AuthGuard, FacadeService, AuthService, NotificationService],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

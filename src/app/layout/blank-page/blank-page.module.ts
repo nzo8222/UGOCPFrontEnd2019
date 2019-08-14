@@ -9,7 +9,6 @@ import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
 @NgModule({
     imports: [CommonModule,
      BlankPageRoutingModule,
-     ReactiveFormsModule,
      DropDownsModule,
      ReactiveFormsModule],
     declarations: [BlankPageComponent]
