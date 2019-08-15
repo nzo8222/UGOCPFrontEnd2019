@@ -88,3 +88,12 @@ export interface DTOPostDatosEmpresa{
     address: string;
     idLocalidad: number;
 }
+
+export interface DTOUpdateDatosEmpresa{
+    idUsuario: string;
+    idEmpresa: string;
+    name: string;
+    phoneNumber: number;
+    address: string;
+    idLocalidad: number;
+}

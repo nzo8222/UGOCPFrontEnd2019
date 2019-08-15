@@ -59,11 +59,18 @@
                   <button class="btn btn-success" type="submit" [disabled]="!formaEmpresa.valid ">Agregar Empresa</button>
                 </div>
     </form>
+    <div class="form-inline">
+      <button class="btn btn-primary" (click)="OnClickEditarEmpresa()" [disabled]="!formaEmpresa.valid ">Editar Empresa</button>
+    </div>
+    <div class="form-inline">
+      <button class="btn btn-danger" (click)="OnClickDeleteEmpresa()">Borrar Empresa</button>
+    </div>
       <kendo-grid 
       [data]="listaGridEmpresas" 
       [height]="410" 
+      [selectable]="true"
       [selectable]="{ checkboxOnly: false, mode: 'single' }"  
-      [kendoGridSelectBy]="'idMovimientoAlmacen'"
+      [kendoGridSelectBy]="'idCompany'"
       [selectedKeys]="selectedKeys"> 
       <kendo-grid-column field="idCompany" title="ID" width="100">
       </kendo-grid-column>
