@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { RespuestaServidor } from '../interfaces/response';
-import { LoginDTO, RegistroUsuarioDTO, DTOidEstado, DTOidMunicipio, DTODatosUsuario, DTOPostDatosEmpresa, DTOUpdateDatosEmpresa } from '../interfaces/DTO';
+import { LoginDTO, RegistroUsuarioDTO, DTOidEstado, DTOidMunicipio, DTODatosUsuario, DTOPostDatosEmpresa, DTOUpdateDatosEmpresa, DTOGetDatosProducto } from '../interfaces/DTO';
 import { AuthService } from '../guard/auth.service';
 
 
@@ -119,6 +119,9 @@ export class FacadeService {
     return this.request.doPost<RespuestaServidor>(`Empresa/UpdateEmpresa`, DatosEmpresa);
   }
   public DeleteEmpresaData(DatosEmpresa: DTOUpdateDatosEmpresa): Observable<RespuestaServidor> {
-    return this.request.doPost<RespuestaServidor>(`Empresa/UpdateEmpresa`, DatosEmpresa);
+    return this.request.doPost<RespuestaServidor>(`Empresa/DeleteEmpresa`, DatosEmpresa);
+  }
+  public GetProductosEmpresa(DatosEmpresa: DTOGetDatosProducto): Observable<RespuestaServidor> {
+    return this.request.doPost<RespuestaServidor>(`Products/GetProducts`, DatosEmpresa);
   }
 }

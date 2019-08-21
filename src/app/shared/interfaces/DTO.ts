@@ -97,3 +97,8 @@ export interface DTOUpdateDatosEmpresa{
     address: string;
     idLocalidad: number;
 }
+
+export interface DTOGetDatosProducto{
+    idUsuario: string;
+    idEmpresa: string;
+}

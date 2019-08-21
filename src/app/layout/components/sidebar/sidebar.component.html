@@ -64,6 +64,10 @@
             <i class="fa fa-file-o"></i>&nbsp;
             <span>{{ 'Datos empresa' }}</span>
         </a>
+        <a [routerLink]="['/producto']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+            <i class="fa fa-file-o"></i>&nbsp;
+            <span>{{ 'Datos productos' }}</span>
+        </a>
         <!-- <a *ngIf="user.role === 'administrator'" [routerLink]="['/registro']" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-file-o"></i>&nbsp;
             <span>{{ 'Alta administrador' }}</span>

@@ -40,11 +40,11 @@ export class EmpresaComponent implements OnInit {
       this.notificationService.showError("Seleccioné una empresa valida.");
       return
     }
-    // if(this.listaGridEmpresas.findIndex(e => e.idCompany === this.selectedKeys[0]))
-    // {
-    //   this.notificationService.showError("Seleccioné una empresa valida.");
-    //   return
-    // }
+    if(!this.listaGridEmpresas.findIndex(e => e.idCompany === this.selectedKeys[0]))
+    {
+      this.notificationService.showError("Seleccioné una empresa valida.");
+      return
+    }
     
     const idx = this.listaGridEmpresas.findIndex(e => e.idCompany === this.selectedKeys[0]);
 
@@ -70,7 +70,8 @@ export class EmpresaComponent implements OnInit {
           this.notificationService.showError(res.mensajeError);
         }
       }
-    )
+    );
+    this.selectedKeys = [];
   }
   OnClickEditarEmpresa()
   {
@@ -79,7 +80,7 @@ export class EmpresaComponent implements OnInit {
       this.notificationService.showError("Seleccioné una empresa valida.");
       return
     }
-    if(this.listaGridEmpresas.findIndex(e => e.idCompany === this.selectedKeys[0]))
+    if(!this.listaGridEmpresas.findIndex(e => e.idCompany === this.selectedKeys[0]))
     {
       this.notificationService.showError("Seleccioné una empresa valida.");
       return
@@ -123,7 +124,7 @@ export class EmpresaComponent implements OnInit {
         this.notificationService.showError("Llene la forma correctamente.")
       }
     }
-
+    this.selectedKeys = [];
   }
 
 

@@ -16,7 +16,8 @@ const routes: Routes = [
             { path: 'grid', loadChildren: () => import('./grid/grid.module').then(m => m.GridModule) },
             { path: 'components', loadChildren: () => import('./bs-component/bs-component.module').then(m => m.BsComponentModule) },
             { path: 'blank-page', loadChildren: () => import('./blank-page/blank-page.module').then(m => m.BlankPageModule) },
-            { path: 'empresa', loadChildren: () => import('./empresa/empresa.module').then(e => e.EmpresaModule)}
+            { path: 'empresa', loadChildren: () => import('./empresa/empresa.module').then(e => e.EmpresaModule)},
+            { path: 'producto', loadChildren: () => import('./producto/producto.module').then(e => e.ProductoModule)}
         ]
     }
 ];
