@@ -26,28 +26,28 @@ export interface EstadoDTO {
     id: number;
 }
 
-export interface DTOidEstado{
-    id:number;
+export interface DTOidEstado {
+    id: number;
 }
 
-export interface MunicipioDTO{
-    id:number;
-    nombre:string;
+export interface MunicipioDTO {
+    id: number;
+    nombre: string;
 }
 
-export interface LocalidadDTO{
-    id:number;
-    nombre:string;
+export interface LocalidadDTO {
+    id: number;
+    nombre: string;
 }
 
-export interface DTOidMunicipio{
-    id:number;
+export interface DTOidMunicipio {
+    id: number;
 }
 
-export interface DTODatosUsuario{
+export interface DTODatosUsuario {
     id: string;
-    fullName:string;
-    address:string;
+    fullName: string;
+    address: string;
     idLocalidad: number;
     cellPhone: number;
     phoneNumber: number;
@@ -62,7 +62,7 @@ export interface DTODatosUsuario{
     role: string;
 }
 
-export interface DTOEmpresa{
+export interface DTOEmpresa {
     idCompany: string;
     name: string;
     phoneNumber: number;
@@ -71,7 +71,7 @@ export interface DTOEmpresa{
     lstProduct: Product[];
 }
 
-export interface Product{
+export interface Product {
     idProduct: string;
     claveProductoServicio: number;
     name: String;
@@ -81,7 +81,7 @@ export interface Product{
     cuantityInKG: number;
 }
 
-export interface DTOPostDatosEmpresa{
+export interface DTOPostDatosEmpresa {
     idUsuario: string;
     name: string;
     phoneNumber: number;
@@ -89,7 +89,7 @@ export interface DTOPostDatosEmpresa{
     idLocalidad: number;
 }
 
-export interface DTOUpdateDatosEmpresa{
+export interface DTOUpdateDatosEmpresa {
     idUsuario: string;
     idEmpresa: string;
     name: string;
@@ -98,7 +98,23 @@ export interface DTOUpdateDatosEmpresa{
     idLocalidad: number;
 }
 
-export interface DTOGetDatosProducto{
+export interface DTOGetDatosProducto {
     idUsuario: string;
     idEmpresa: string;
+}
+
+export interface DTOPostDatosProducto {
+    idUsuario: string;
+    idEmpresa: string;
+    claveProductoServicio: string;
+    name: String;
+    calidad: String;
+    startOfHarvest: Date;
+    endOfHarvest: Date;
+    cuantityInKG: number;
+}
+
+export interface DTOClaveProdServ{
+    codigo: string;
+    descripcion: string;
 }

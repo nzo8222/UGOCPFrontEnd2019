@@ -1,43 +1,94 @@
 <div class="row">
   <div class="col-md-8">
-    <kendo-grid 
-    [data]="listaGridEmpresas"  
-    [height]="410" 
-    [selectable]="true"
-    [selectable]="{ checkboxOnly: false, mode: 'single' }"  
-    [kendoGridSelectBy]="'idCompany'"
-    [selectedKeys]="selectedKeys"> 
-    <kendo-grid-column field="idCompany" title="ID" width="100">
-    </kendo-grid-column>
-    <kendo-grid-column field="name" title="Nombre" width="150">
-    </kendo-grid-column> 
-    <kendo-grid-column field="phoneNumber" title="Número de telefono" width="150">
-    </kendo-grid-column>
-    <kendo-grid-column field="address" title="Dirección" width="150">
-    </kendo-grid-column> 
-    <kendo-grid-column field="idLocalidad" title="ID Localidad" width="150">
-    </kendo-grid-column>  
-  </kendo-grid>  
-  <div class="form-inline">
-    <button class="btn btn-success"  (click)="OnClickProducts()">Ver Productos</button>
+    <kendo-grid [data]="listaGridEmpresas" [height]="410" [selectable]="true"
+      [selectable]="{ checkboxOnly: false, mode: 'single' }" [kendoGridSelectBy]="'idCompany'"
+      [selectedKeys]="selectedKeysEmpresa">
+      <kendo-grid-column field="idCompany" title="ID" width="100">
+      </kendo-grid-column>
+      <kendo-grid-column field="name" title="Nombre" width="150">
+      </kendo-grid-column>
+      <kendo-grid-column field="phoneNumber" title="Número de telefono" width="150">
+      </kendo-grid-column>
+      <kendo-grid-column field="address" title="Dirección" width="150">
+      </kendo-grid-column>
+      <kendo-grid-column field="idLocalidad" title="ID Localidad" width="150">
+      </kendo-grid-column>
+    </kendo-grid>
+    <div class="form-inline">
+      <button class="btn btn-success" (click)="OnClickProducts()">Ver Productos</button>
+    </div>
+    <kendo-grid [data]="listaGridProductos" [height]="410" [selectable]="true"
+      [selectable]="{ checkboxOnly: false, mode: 'single' }" [kendoGridSelectBy]="'idCompany'"
+      [selectedKeys]="selectedKeysProducto">
+      <kendo-grid-column field="idProduct" title="ID" width="100">
+      </kendo-grid-column>
+      <kendo-grid-column field="name" title="Nombre" width="150">
+      </kendo-grid-column>
+      <kendo-grid-column field="claveProductoServicio" title="clave SAT" width="150">
+      </kendo-grid-column>
+      <kendo-grid-column field="calidad" title="Calidad" width="150">
+      </kendo-grid-column>
+      <kendo-grid-column field="startOfHarvest" title="Inicio Cosecha" width="150">
+      </kendo-grid-column>
+      <kendo-grid-column field="endOfHarvest" title="Fin Cosecha" width="150">
+      </kendo-grid-column>
+      <kendo-grid-column field="cuantityInKG" title="Cantidad en KG" width="150">
+      </kendo-grid-column>
+    </kendo-grid>
+
+    <form [formGroup]="formaProducto" (ngSubmit)="OnSubmitFormaProducto()">
+      <div class="form-group">
+        <label for="nombreProducto">Nombre Producto</label>
+        <input type="text" id="nombreProducto" class="form-control" formControlName="nombreProducto">
+        <span *ngIf="!formaProducto.get('nombreProducto').valid && formaProducto.get('nombreProducto').touched"
+          class="help-block">Ingrese un nombre para el producto.</span>
+      </div>
+      <div class="form-group">
+          <label for="nombreProducto">Categoría SAT</label>
+        <kendo-autocomplete [data]="lstProductos" [placeholder]="'Seleccione un producto'" [valueField]="'descripcion'"
+          [filterable]="true" (filterChange)="handleFilter($event)" formControlName="claveProducto">
+        </kendo-autocomplete>
+      </div>
+
+
+      <div class="form-inline"> Calidad del producto </div>
+      <div class="form-inline" *ngFor="let cal of calidad">
+
+        <label for="calidad">
+          <input type="radio" [value]="cal" id="calidad" formControlName="calidad">{{cal}}
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label for="inicioDeCosecha">Inicio de cosecha</label>
+        <input type="date" id="inicioDeCosecha" class="form-control" formControlName="inicioDeCosecha">
+        <span *ngIf="!formaProducto.get('inicioDeCosecha').valid && formaProducto.get('inicioDeCosecha').touched"
+          class="help-block">Ingresa la
+          Inicio de cosecha</span>
+      </div>
+
+      <div class="form-group">
+        <label for="finDeCosecha">Fin de cosecha</label>
+        <input type="date" id="finDeCosecha" class="form-control" formControlName="finDeCosecha">
+        <span *ngIf="!formaProducto.get('finDeCosecha').valid && formaProducto.get('finDeCosecha').touched"
+          class="help-block">Ingresa la
+          Fin de cosecha</span>
+      </div>
+
+      <div class="form-group">
+        <label for="CantidadEnKG">Cantidad en KG</label>
+        <input type="number" id="CantidadEnKG" class="form-control" formControlName="CantidadEnKG">
+        <span *ngIf="!formaProducto.get('CantidadEnKG').valid && formaProducto.get('CantidadEnKG').touched"
+          class="help-block">Ingresa la
+          cantidad en KG</span>
+      </div>
+
+      <div class="form-inline">
+        <button class="btn btn-success" type="submit" [disabled]="!formaProducto.valid ">Agregar Producto</button>
+      </div>
+    </form>
+
+
+
   </div>
-  <kendo-grid 
-    [data]="listaGridEmpresas"  
-    [height]="410" 
-    [selectable]="true"
-    [selectable]="{ checkboxOnly: false, mode: 'single' }"  
-    [kendoGridSelectBy]="'idCompany'"
-    [selectedKeys]="selectedKeys"> 
-    <kendo-grid-column field="idCompany" title="ID" width="100">
-    </kendo-grid-column>
-    <kendo-grid-column field="name" title="Nombre" width="150">
-    </kendo-grid-column> 
-    <kendo-grid-column field="phoneNumber" title="Número de telefono" width="150">
-    </kendo-grid-column>
-    <kendo-grid-column field="address" title="Dirección" width="150">
-    </kendo-grid-column> 
-    <kendo-grid-column field="idLocalidad" title="ID Localidad" width="150">
-    </kendo-grid-column>  
-  </kendo-grid>  
-  </div>
-</div> 
+</div>
