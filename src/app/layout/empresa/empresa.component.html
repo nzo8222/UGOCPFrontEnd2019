@@ -1,70 +1,6 @@
 <div class="row">
   <div class="col-md-8"> 
-    <form [formGroup]="formaEmpresa" (ngSubmit)="onSubmitFormaEmpresa()">
-        <div class="form-group">
-            <label for="nombreEmpresa">Nombre Empresa</label>
-            <input type="text" id="nombreEmpresa" class="form-control" formControlName="nombreEmpresa">
-            <span
-              *ngIf="!formaEmpresa.get('nombreEmpresa').valid && formaEmpresa.get('nombreEmpresa').touched"
-              class="help-block">Ingrese un nombre para la empresa.</span>
-          </div>
-          <div class="form-group">
-              <label for="numeroTelefono">Número de telefono</label>
-              <input type="text" id="numeroTelefono" class="form-control" formControlName="numeroTelefono">
-              <span
-                *ngIf="!formaEmpresa.get('numeroTelefono').valid && formaEmpresa.get('numeroTelefono').touched"
-                class="help-block">Ingrese un número telefonico.</span>
-            </div>
-            <div class="form-group">
-                <label for="estado">Estado</label>
-                <kendo-autocomplete id="estado" name="estado" [data]="lstEstado" [placeholder]="'Seleccione un estado'"
-                  [valueField]="'nombre'" ngModel aria-required="Introdusca el estado" formControlName="estado">
-                </kendo-autocomplete>
-                <span *ngIf="!formaEmpresa.get('estado').valid && formaEmpresa.get('estado').touched" class="help-block">Ingresa
-                  un Estado</span>
-              </div>
-              <div class="form-group">
-                <label for="municipio">Municipio</label>
-                <kendo-autocomplete id="municipio" name="municipio" [data]="lstMunicipios"
-                  [placeholder]="'Seleccione un municipio'" [valueField]="'nombre'" ngModel
-                  aria-required="Introdusca el municipio" formControlName="municipio">
-                </kendo-autocomplete>
-        
-                <span *ngIf="!formaEmpresa.get('municipio').valid && formaEmpresa.get('municipio').touched"
-                  class="help-block">Ingresa un municipio valido</span>
-              </div>
-              <div class="form-group">
-                <button class="btn btn-primary" (click)="OnClickObtenerMunicipios()">Obtener municipios</button>
-              </div>
-              <div class="form-group">
-                <label for="localidad">Localidad</label>
-                <kendo-autocomplete id="localidad" name="localidad" [data]="lstLocalidad"
-                  [placeholder]="'Seleccione un localidad'" [valueField]="'nombre'" ngModel
-                  aria-required="Introdusca la localidad" formControlName="localidad">
-                </kendo-autocomplete>
-                <span *ngIf="!formaEmpresa.get('localidad').valid && formaEmpresa.get('localidad').touched"
-                  class="help-block">Ingresa un localidad valida</span>
-              </div>
-              <div class="form-group">
-                <button class="btn btn-primary" (click)="OnClickObtenerLocalidad()">Obtener localidades</button>
-              </div>
-            <div class="form-group">
-                <label for="direccion">Dirección</label>
-                <input type="text" id="direccion" class="form-control" formControlName="direccion">
-                <span
-                  *ngIf="!formaEmpresa.get('direccion').valid && formaEmpresa.get('direccion').touched"
-                  class="help-block">Ingrese la dirección de la empresa.</span>
-              </div>
-              <div class="form-inline">
-                  <button class="btn btn-success" type="submit" [disabled]="!formaEmpresa.valid ">Agregar Empresa</button>
-                </div>
-    </form>
-    <div class="form-inline">
-      <button class="btn btn-primary" (click)="OnClickEditarEmpresa()" [disabled]="!formaEmpresa.valid ">Editar Empresa</button>
-    </div>
-    <div class="form-inline">
-      <button class="btn btn-danger" (click)="OnClickDeleteEmpresa()">Borrar Empresa</button>
-    </div>
+<h2>Lista de Empresas</h2>
       <kendo-grid 
       [data]="listaGridEmpresas" 
       [height]="410" 
@@ -82,21 +18,89 @@
       </kendo-grid-column> 
       <kendo-grid-column field="idLocalidad" title="ID Localidad" width="150">
       </kendo-grid-column> 
-    </kendo-grid>  
-    <div>   
-      <kendo-autocomplete [data]="lstProductos" [placeholder]="'Seleccione un producto'" [valueField]="'descripcion'"
-      [filterable]="true"
-      (filterChange)="handleFilter($event)"  >
-      </kendo-autocomplete>
+    </kendo-grid>   
+    <button class="success" (click)="OnClickCargarDatosEmpresa()"></button>
+    <form [formGroup]="formaEmpresa" (ngSubmit)="onSubmitFormaEmpresa()">
+        <div class="form-group">
+            <label for="nombreEmpresa">Nombre Empresa</label>
+            <input type="text" id="nombreEmpresa" class="form-control" formControlName="nombreEmpresa">
+            <span
+              *ngIf="!formaEmpresa.get('nombreEmpresa').valid && formaEmpresa.get('nombreEmpresa').touched"
+              class="help-block">Ingrese un nombre para la empresa.</span>
+          </div>
+          <div class="form-group">
+              <label for="numeroTelefono">Número de telefono</label>
+              <input type="text" id="numeroTelefono" class="form-control" formControlName="numeroTelefono">
+              <span
+                *ngIf="!formaEmpresa.get('numeroTelefono').valid && formaEmpresa.get('numeroTelefono').touched"
+                class="help-block">Ingrese un número telefonico.</span>
+            </div>
+           
+            <div class="form-group">
+                <label for="estado">Estado</label>
+                <kendo-autocomplete id="estado" name="estado" [data]="lstEstado" [placeholder]="'Seleccione un estado'"
+                  [valueField]="'nombre'" ngModel aria-required="Introdusca el estado" formControlName="estado"
+                  (close)="closeEstados()">
+                </kendo-autocomplete>
+                <span *ngIf="!formaEmpresa.get('estado').valid && formaEmpresa.get('estado').touched" class="help-block">Ingresa
+                  un Estado</span>
+              </div>
+              <div class="form-group">
+                <label for="municipio">Municipio</label>
+                <kendo-autocomplete id="municipio" name="municipio" [data]="lstMunicipios"
+                  [placeholder]="'Seleccione un municipio'" [valueField]="'nombre'" ngModel
+                  aria-required="Introdusca el municipio" formControlName="municipio"
+                  (close)="closeMunicipuis()">
+                </kendo-autocomplete>
+        
+                <span *ngIf="!formaEmpresa.get('municipio').valid && formaEmpresa.get('municipio').touched"
+                  class="help-block">Ingresa un municipio valido</span>
+             
+
+            </div>
+              <!-- <div class="form-group">
+                <button class="btn btn-primary" (click)="OnClickObtenerMunicipios()">Obtener municipios</button>
+              </div> -->
+              <div class="form-group">
+                <label for="localidad">Localidad</label>
+                <kendo-autocomplete id="localidad" name="localidad" [data]="lstLocalidad"
+                  [placeholder]="'Seleccione un localidad'" [valueField]="'nombre'" ngModel
+                  aria-required="Introdusca la localidad" formControlName="localidad">
+                </kendo-autocomplete>
+                <span *ngIf="!formaEmpresa.get('localidad').valid && formaEmpresa.get('localidad').touched"
+                  class="help-block">Ingresa un localidad valida</span>
+              </div>
+              <!-- <div class="form-group">
+                <button class="btn btn-primary" (click)="OnClickObtenerLocalidad()">Obtener localidades</button>
+              </div> -->
+            <div class="form-group">
+                <label for="direccion">Dirección</label>
+                <input type="text" id="direccion" class="form-control" formControlName="direccion">
+                <span
+                  *ngIf="!formaEmpresa.get('direccion').valid && formaEmpresa.get('direccion').touched"
+                  class="help-block">Ingrese la dirección de la empresa.</span>
+              </div>
+              
+                  
+                
+    </form>
+    <div class="form-inline">
+    <div style="padding: 5px">
+        <button class="btn btn-success" (click)="onSubmitFormaEmpresa()" [disabled]="!formaEmpresa.valid ">Agregar Empresa</button>
+      </div>
+      <div style="padding: 5px">
+        <button class="btn btn-primary" (click)="OnClickEditarEmpresa()" [disabled]="!formaEmpresa.valid || !selectedKeys[0]">Editar Empresa</button>
+      </div>
+      <div style="padding: 5px">
+        <button class="btn btn-danger" (click)="OnClickDeleteEmpresa()" [disabled]="!selectedKeys[0]">Borrar Empresa</button>
+      </div>
     </div>
-
-    <!-- <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
-      <kendo-autocomplete id="estado" name="estado" [data]="lstEstado" [placeholder]="'Seleccione un estado'"
-        [valueField]="'nombre'" ngModel aria-required="El producto es requerido" formControlName="estado">
-      </kendo-autocomplete>
-      <span *ngIf="!formaUsuario.get('estado').valid && formaUsuario.get('estado').touched" class="help-block">Ingresa
-        un Estado</span>
-
-    </form> -->
+    <!-- <div class="form-inline">
+      
+    </div>
+    <div class="form-inline">
+      
+    </div> -->
+    
   </div>
 </div>

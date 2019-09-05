@@ -118,3 +118,39 @@ export interface DTOClaveProdServ{
     codigo: string;
     descripcion: string;
 }
+
+export interface DTOUpdateDatosProducto {
+    idProducto: string;
+    idUsuario: string;
+    idEmpresa: string;
+    claveProductoServicio: string;
+    name: String;
+    calidad: String;
+    startOfHarvest: Date;
+    endOfHarvest: Date;
+    cuantityInKG: number;
+}
+
+export interface DTODeleteDatosProducto {
+    idProducto: string;
+    idUsuario: string;
+    idEmpresa: string;
+}
+
+export interface DTODatosUsuarioConLocalidad {
+    fullName: string;
+    address: string;
+    localidad: string;
+    municipio: string;
+    estado: string;
+    cellPhone: number;
+    phoneNumber: number;
+    dateOfBirth: Date;
+    gender: string;
+    civilStatus: string;
+    ocupation: string;
+    charge: string;
+    curp: string;
+    claveDeElector: string;
+    numberINECredential: string;
+}

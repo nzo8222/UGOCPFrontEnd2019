@@ -19,32 +19,66 @@ export class EmpresaComponent implements OnInit {
   public listaGridEmpresas: DTOEmpresa[] = [];
   public idxSelectedItem: number;
   public selectedKeys: string[] = [];
+  public esperawe : boolean = false;
   constructor(private facade: FacadeService, private authService: AuthService, private notificationService: NotificationService) { }
 
+  OnClickCargarDatosEmpresa()
+  {
+    if(!this.listaGridEmpresas)
+    {
+      this.notificationService.showError("Seleccioné una empresa valida.");
+      return;
+    }                                     
+    if(!this.listaGridEmpresas.findIndex(e => e.idCompany === this.selectedKeys[0]))
+    {
+      this.notificationService.showError("Seleccioné una empresa valida.");
+      return;
+    }
+    let empresa = this.listaGridEmpresas.find(e => e.idCompany === this.selectedKeys[0]);
+    
+  }
   ngOnInit() {
     this.LoadListEmpresas();
     this.loadEstadoList();
     this.formaEmpresa = new FormGroup({
-      'nombreEmpresa': new FormControl(null, [Validators.required]),
-      'numeroTelefono': new FormControl(null, [Validators.required]),
-      'direccion': new FormControl(null, [Validators.required]),
+      'nombreEmpresa': new FormControl(null, [Validators.required, Validators.pattern('^[a-zA-Z0-9_ ]*$'), Validators.minLength(5), Validators.maxLength(50)]),
+      'numeroTelefono': new FormControl(null, [Validators.required, Validators.pattern('^[0-9]*$'), Validators.minLength(5), Validators.maxLength(15)]),
+      'direccion': new FormControl(null, [Validators.required, Validators.pattern('^[a-zA-Z0-9_ ]*$'), Validators.minLength(5), Validators.maxLength(50)]),
       'estado': new FormControl(null, [Validators.required]),
       'municipio': new FormControl(null, [Validators.required]),
       'localidad': new FormControl(null, [Validators.required])
     })
   }
+  public closeEstados(): void {
+    this.esperawe = true;
+     let interval = setInterval( () => {
+       this.esperawe = false;
+       clearInterval(interval);
+       this.OnClickObtenerMunicipios();
+     }, 500);
+ }
+
+ public closeMunicipuis(): void {
+  this.esperawe = true;
+  let interval = setInterval( () => {
+    this.esperawe = false;
+    clearInterval(interval);
+    this.OnClickObtenerLocalidad();
+  }, 500);
+}
+
   OnClickDeleteEmpresa()
   {
     if(!this.listaGridEmpresas)
     {
       this.notificationService.showError("Seleccioné una empresa valida.");
       return
-    }
-    if(!this.listaGridEmpresas.findIndex(e => e.idCompany === this.selectedKeys[0]))
-    {
-      this.notificationService.showError("Seleccioné una empresa valida.");
-      return
-    }
+    }                                     
+    // if(!this.listaGridEmpresas.findIndex(e => e.idCompany === this.selectedKeys[0]))
+    // {
+    //   this.notificationService.showError("Seleccioné una empresa valida.");
+    //   return
+    // }
     
     const idx = this.listaGridEmpresas.findIndex(e => e.idCompany === this.selectedKeys[0]);
 
@@ -80,11 +114,11 @@ export class EmpresaComponent implements OnInit {
       this.notificationService.showError("Seleccioné una empresa valida.");
       return
     }
-    if(!this.listaGridEmpresas.findIndex(e => e.idCompany === this.selectedKeys[0]))
-    {
-      this.notificationService.showError("Seleccioné una empresa valida.");
-      return
-    }
+    // if(!this.listaGridEmpresas.findIndex(e => e.idCompany === this.selectedKeys[0]))
+    // {
+    //   this.notificationService.showError("Seleccioné una empresa valida.");
+    //   return
+    // }
     
     const idx = this.listaGridEmpresas.findIndex(e => e.idCompany === this.selectedKeys[0]);
 

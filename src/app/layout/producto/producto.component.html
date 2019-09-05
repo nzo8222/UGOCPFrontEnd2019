@@ -1,5 +1,6 @@
 <div class="row">
   <div class="col-md-8">
+      <h2>Lista de Empresas</h2>
     <kendo-grid [data]="listaGridEmpresas" [height]="410" [selectable]="true"
       [selectable]="{ checkboxOnly: false, mode: 'single' }" [kendoGridSelectBy]="'idCompany'"
       [selectedKeys]="selectedKeysEmpresa">
@@ -14,11 +15,13 @@
       <kendo-grid-column field="idLocalidad" title="ID Localidad" width="150">
       </kendo-grid-column>
     </kendo-grid>
-    <div class="form-inline">
+    <div class="form-inline" style="padding: 5px">
       <button class="btn btn-success" (click)="OnClickProducts()">Ver Productos</button>
     </div>
+    <div *ngIf="listaGridProductos.length !== 0">
+        <h2>Lista de Productos {{ nombreEmpresaSeleccionada }}</h2>
     <kendo-grid [data]="listaGridProductos" [height]="410" [selectable]="true"
-      [selectable]="{ checkboxOnly: false, mode: 'single' }" [kendoGridSelectBy]="'idCompany'"
+      [selectable]="{ checkboxOnly: false, mode: 'single' }" [kendoGridSelectBy]="'idProduct'"
       [selectedKeys]="selectedKeysProducto">
       <kendo-grid-column field="idProduct" title="ID" width="100">
       </kendo-grid-column>
@@ -35,7 +38,7 @@
       <kendo-grid-column field="cuantityInKG" title="Cantidad en KG" width="150">
       </kendo-grid-column>
     </kendo-grid>
-
+   </div>
     <form [formGroup]="formaProducto" (ngSubmit)="OnSubmitFormaProducto()">
       <div class="form-group">
         <label for="nombreProducto">Nombre Producto</label>
@@ -45,12 +48,16 @@
       </div>
       <div class="form-group">
           <label for="nombreProducto">Categoría SAT</label>
+          <label for="nombreProducto">Los nombres de producto tienen la primera letra en mayuscula por ejemplo "Papaya".</label>
+          <label for="nombreProducto">Si no encuentra el producto puede buscar el nombre exacto <a href="https://www.sat.gob.mx/consultas/53693/catalogo-de-productos-y-servicios" target="_blank" rel="noopener noreferrer">aquí</a>.</label>
+          <div>
         <kendo-autocomplete [data]="lstProductos" [placeholder]="'Seleccione un producto'" [valueField]="'descripcion'"
           [filterable]="true" (filterChange)="handleFilter($event)" formControlName="claveProducto">
         </kendo-autocomplete>
       </div>
+      </div>
 
-
+      
       <div class="form-inline"> Calidad del producto </div>
       <div class="form-inline" *ngFor="let cal of calidad">
 
@@ -83,12 +90,19 @@
           cantidad en KG</span>
       </div>
 
-      <div class="form-inline">
-        <button class="btn btn-success" type="submit" [disabled]="!formaProducto.valid ">Agregar Producto</button>
-      </div>
+ 
     </form>
-
-
+    <div class="form-inline">
+      <div style="padding: 5px"><button class="btn btn-success" (click)="OnSubmitFormaProducto()" [disabled]="!formaProducto.valid ">Agregar Producto</button></div>
+      <div style="padding: 5px"> <button class="btn btn-primary" (click)="OnClickUpdateProducto()" [disabled]="!formaProducto.valid || !selectedKeysProducto[0]">Editar Producto</button>
+      </div>
+      <div style="padding: 5px"> <button class="btn btn-danger" (click)="OnClickDeleteProducto()" [disabled]="!selectedKeysProducto[0]" >Eliminar Producto</button>
+      </div>
+    </div>
+    <div class="form-inline">
+         </div>
+    <div class="form-inline">
+       </div>
 
   </div>
 </div>

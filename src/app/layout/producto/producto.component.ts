@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DTOEmpresa, DTOUpdateDatosEmpresa, DTOGetDatosProducto, Product, DTOClaveProdServ, DTOPostDatosProducto } from 'src/app/shared/interfaces/DTO';
+import { DTOEmpresa, DTOUpdateDatosEmpresa, DTOGetDatosProducto, Product, DTOClaveProdServ, DTOPostDatosProducto, DTOUpdateDatosProducto, DTODeleteDatosProducto } from 'src/app/shared/interfaces/DTO';
 import { AuthService } from 'src/app/shared/guard/auth.service';
 import { FacadeService } from 'src/app/shared/services/facade.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
@@ -20,18 +20,98 @@ export class ProductoComponent implements OnInit {
   public lstProductos: DTOClaveProdServ[];
   empresaSeleccionada: string[] = [];
   calidad = ['Organico', 'No Organico'];
+  public nombreEmpresaSeleccionada: string = "";
   constructor(private facade: FacadeService, private authService: AuthService, private notificationService: NotificationService) { }
 
   ngOnInit() {
     this.LoadListEmpresas();
     this.formaProducto = new FormGroup({
-      'nombreProducto': new FormControl(null, [Validators.required]),
+      'nombreProducto': new FormControl(null, [Validators.required, Validators.pattern('^[a-zA-Z0-9_ ]*$'), Validators.minLength(5), Validators.maxLength(50)]),
       'claveProducto': new FormControl(null, [Validators.required]),
-      'calidad': new FormControl(null, [Validators.required]),
+      'calidad': new FormControl(null, [Validators.required, Validators.pattern('[a-zA-Z]+'), Validators.minLength(5), Validators.maxLength(50)]),
       'inicioDeCosecha': new FormControl(null, [Validators.required]),
       'finDeCosecha': new FormControl(null, [Validators.required]),
-      'CantidadEnKG': new FormControl(null, [Validators.required])
+      'CantidadEnKG': new FormControl(null, [Validators.required, Validators.pattern('^[0-9]*$'), Validators.minLength(1), Validators.maxLength(7)])
     })
+  }
+  OnClickDeleteProducto()
+  {
+    if(!this.empresaSeleccionada[0])
+    {
+      this.notificationService.showError("Es necesario dar click en ver productos de la empresa para agregar productos.");
+      return;
+    }
+    var empresaDelete = this.listaGridEmpresas.find(e => e.idCompany === this.empresaSeleccionada[0]);
+    var productoDelete = this.listaGridProductos.find(e => e.idProduct === this.selectedKeysProducto[0]);
+    if(!productoDelete)
+    {
+      this.notificationService.showError("Seleccione un producto.");
+      return;
+    }
+    let datosProducto: DTODeleteDatosProducto = {
+    idProducto : productoDelete.idProduct,
+    idEmpresa : empresaDelete.idCompany,
+    idUsuario : this.authService.getUserId()
+    };
+    this.facade.DeleteProductoData(datosProducto).subscribe(
+      res => {
+        if(res.exitoso)
+        {
+          this.notificationService.showSuccess("Se borro el producto correctamente.");
+          this.LoadListProducts();
+          this.formaProducto.reset();
+        }
+        else
+        {
+          this.notificationService.showError(res.mensajeError);
+        }
+      }
+    );
+    this.selectedKeysProducto = [];
+  }
+  OnClickUpdateProducto()
+  {
+    if (!this.formaProducto.valid) {
+      return;
+    }
+    if(!this.empresaSeleccionada[0])
+    {
+      this.notificationService.showError("Es necesario dar click en ver productos de la empresa para agregar productos.");
+      return;
+    }
+    let empresa = this.listaGridEmpresas.find(e => e.idCompany === this.empresaSeleccionada[0]);
+    let producto = this.listaGridProductos.find(e => e.idProduct === this.selectedKeysProducto[0]);
+    if(!empresa)
+    {
+      this.notificationService.showError("Seleccione una empresa valida");
+      return;
+    }
+    let categoriaSat = this.lstProductos.find(p => p.descripcion === this.formaProducto.value.claveProducto)
+    let datosProductos : DTOUpdateDatosProducto = {
+      idProducto : producto.idProduct,
+      idUsuario : this.authService.getUserId(),
+      idEmpresa : empresa.idCompany,
+      name : this.formaProducto.value.nombreProducto,
+      calidad : this.formaProducto.value.calidad,
+      startOfHarvest : this.formaProducto.value.inicioDeCosecha,
+      endOfHarvest : this.formaProducto.value.finDeCosecha,
+      cuantityInKG : this.formaProducto.value.CantidadEnKG,
+      claveProductoServicio : categoriaSat.codigo
+    }
+    this.facade.UpdateProductoData(datosProductos).subscribe(
+      res => {
+        if(res.exitoso)
+        {
+          this.notificationService.showSuccess("Se guardaron los datos correctamente.");
+          this.LoadListProducts();
+          this.formaProducto.reset();
+        }
+        else{
+          this.notificationService.showError(res.mensajeError);
+        }
+      }
+    );
+    this.selectedKeysProducto = [];
   }
   OnSubmitFormaProducto()
   {
@@ -74,6 +154,7 @@ export class ProductoComponent implements OnInit {
         }
       }
     )
+    this.formaProducto.reset();
     this.selectedKeysProducto = [];
   }
 
@@ -96,6 +177,27 @@ export class ProductoComponent implements OnInit {
       }
     )
   }
+  LoadListProducts()
+  {
+    let empresa: DTOGetDatosProducto = {
+      idUsuario: this.authService.getUserId(),
+      idEmpresa: this.empresaSeleccionada[0]
+    }
+    this.facade.GetProductosEmpresa(empresa).subscribe(
+      res => {
+        if (!res.exitoso) {
+          this.notificationService.showError(res.mensajeError);
+          this.listaGridProductos = [];
+          return;
+        }
+        const listaProductos = res.payload;
+        this.listaGridProductos = [];
+        this.listaGridProductos = listaProductos;
+        this.notificationService.showSuccess('Se cargaron los productos correctamente');
+      }
+    );
+  }
+  
   OnClickProducts() {
     if (!this.listaGridEmpresas) {
       this.notificationService.showError("Seleccioné una empresa valida.");
@@ -105,25 +207,28 @@ export class ProductoComponent implements OnInit {
     //   this.notificationService.showError("Seleccioné una empresa valida.");
     //   return
     // }
-
+    
     const idx = this.listaGridEmpresas.findIndex(e => e.idCompany === this.selectedKeysEmpresa[0]);
+    let empresa = this.listaGridEmpresas.find(e => e.idCompany === this.selectedKeysEmpresa[0]);
+    this.nombreEmpresaSeleccionada = empresa.name;
     if (idx > -1) { this.idxSelectedItem = idx; }
     if (this.idxSelectedItem > -1) {
-      let empresaSeleccionada = this.listaGridEmpresas.find(e => e.idCompany === this.selectedKeysEmpresa[0]);
+      let empresaSeleccionadaLocal = this.listaGridEmpresas.find(e => e.idCompany === this.selectedKeysEmpresa[0]);
       let empresa: DTOGetDatosProducto = {
         idUsuario: this.authService.getUserId(),
-        idEmpresa: empresaSeleccionada.idCompany
+        idEmpresa: empresaSeleccionadaLocal.idCompany
       }
       this.facade.GetProductosEmpresa(empresa).subscribe(
         res => {
-          if (!res.exitoso) {
-            this.notificationService.showError(res.mensajeError.toString());
-            return;
-          }
-          const listaProductos = res.payload;
+          if (res.exitoso) {
+            const listaProductos = res.payload;
           this.listaGridProductos = [];
           this.listaGridProductos = listaProductos;
           this.notificationService.showSuccess('Se cargaron los productos correctamente');
+          }
+          else{
+            this.notificationService.showError(res.mensajeError);
+          }
         }
       )
     }

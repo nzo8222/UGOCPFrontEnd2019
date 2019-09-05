@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { RespuestaServidor } from '../interfaces/response';
-import { LoginDTO, RegistroUsuarioDTO, DTOidEstado, DTOidMunicipio, DTODatosUsuario, DTOPostDatosEmpresa, DTOUpdateDatosEmpresa, DTOGetDatosProducto, DTOPostDatosProducto } from '../interfaces/DTO';
+import { LoginDTO, RegistroUsuarioDTO, DTOidEstado, DTOidMunicipio, DTODatosUsuario, DTOPostDatosEmpresa, DTOUpdateDatosEmpresa, DTOGetDatosProducto, DTOPostDatosProducto, DTODeleteDatosProducto, DTOUpdateDatosProducto } from '../interfaces/DTO';
 import { AuthService } from '../guard/auth.service';
 
 
@@ -126,5 +126,14 @@ export class FacadeService {
   }
   public PostProductoData(DatosProducto: DTOPostDatosProducto): Observable<RespuestaServidor> {
     return this.request.doPost<RespuestaServidor>(`Products/PostProduct`, DatosProducto);
+  }
+  public UpdateProductoData(DatosProducto: DTOUpdateDatosProducto): Observable<RespuestaServidor> {
+    return this.request.doPost<RespuestaServidor>(`Products/UpdateProduct`, DatosProducto);
+  }
+  public DeleteProductoData(DatosProducto: DTODeleteDatosProducto): Observable<RespuestaServidor> {
+    return this.request.doPost<RespuestaServidor>(`Products/DeleteProduct`, DatosProducto);
+  }
+  public GetDatosUsuario(IdUsuario: string): Observable<RespuestaServidor> {
+    return this.request.doGet<RespuestaServidor>(`Users/${IdUsuario}`);
   }
 }
