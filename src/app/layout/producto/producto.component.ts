@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DTOEmpresa, DTOUpdateDatosEmpresa, DTOGetDatosProducto, Product, DTOClaveProdServ, DTOPostDatosProducto, DTOUpdateDatosProducto, DTODeleteDatosProducto } from 'src/app/shared/interfaces/DTO';
+import { DTOEmpresa, DTOUpdateDatosEmpresa, DTOGetDatosProducto, Product, DTOClaveProdServ, DTOPostDatosProducto, DTOUpdateDatosProducto, DTODeleteDatosProducto, DTODatosClaveProductoServicioSat } from 'src/app/shared/interfaces/DTO';
 import { AuthService } from 'src/app/shared/guard/auth.service';
 import { FacadeService } from 'src/app/shared/services/facade.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
@@ -33,6 +33,45 @@ export class ProductoComponent implements OnInit {
       'finDeCosecha': new FormControl(null, [Validators.required]),
       'CantidadEnKG': new FormControl(null, [Validators.required, Validators.pattern('^[0-9]*$'), Validators.minLength(1), Validators.maxLength(7)])
     })
+  }
+  OnClickCargarDatosProducto()
+  {
+    if(!this.listaGridProductos)
+    {
+      this.notificationService.showError("Seleccioné un producto valido.");
+    }
+    if(!this.listaGridProductos.find(p => p.idProduct === this.selectedKeysProducto[0]))
+    {
+      this.notificationService.showError("Seleccioné un producto valido.");
+    }
+    let producto = this.listaGridProductos.find(p => p.idProduct === this.selectedKeysProducto[0]);
+    this.formaProducto.controls['nombreProducto'].patchValue(producto.name);
+    this.formaProducto.controls['calidad'].patchValue(producto.calidad);
+    this.formaProducto.controls['inicioDeCosecha'].patchValue(this.formatDate(producto.startOfHarvest));
+    this.formaProducto.controls['finDeCosecha'].patchValue(this.formatDate(producto.endOfHarvest));
+    this.formaProducto.controls['CantidadEnKG'].patchValue(producto.cuantityInKG);
+    this.facade.GetNombreProductoSat(producto.claveProductoServicio).subscribe(
+      res => {
+        if(res.exitoso)
+        {
+          let datosProductoServicio = res.payload as DTODatosClaveProductoServicioSat;
+          this.formaProducto.controls['claveProducto'].patchValue(datosProductoServicio.descripcion);
+          this.notificationService.showSuccess("Se cargo los datos del producto correctamente.");
+        }else
+        {
+          this.notificationService.showError(res.mensajeError);
+        }
+      }
+    );
+  }
+  private formatDate(date) {
+    const d = new Date(date);
+    let month = '' + (d.getMonth() + 1);
+    let day = '' + d.getDate();
+    const year = d.getFullYear();
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    return [year, month, day].join('-');
   }
   OnClickDeleteProducto()
   {
@@ -175,7 +214,7 @@ export class ProductoComponent implements OnInit {
           this.notificationService.showError("No se encontraron empresas para este usuario.");
         }
       }
-    )
+    );
   }
   LoadListProducts()
   {

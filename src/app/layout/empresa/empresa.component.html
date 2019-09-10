@@ -6,20 +6,24 @@
       [height]="410" 
       [selectable]="true"
       [selectable]="{ checkboxOnly: false, mode: 'single' }"  
-      [kendoGridSelectBy]="'idCompany'"
+      [kendoGridSelectBy]="'name'"
       [selectedKeys]="selectedKeys"> 
-      <kendo-grid-column field="idCompany" title="ID" width="100">
-      </kendo-grid-column>
+      <!-- <kendo-grid-column field="idCompany" title="ID" width="100">
+      </kendo-grid-column> -->
       <kendo-grid-column field="name" title="Nombre" width="150">
       </kendo-grid-column> 
       <kendo-grid-column field="phoneNumber" title="Número de telefono" width="150">
       </kendo-grid-column>
       <kendo-grid-column field="address" title="Dirección" width="150">
       </kendo-grid-column> 
-      <kendo-grid-column field="idLocalidad" title="ID Localidad" width="150">
+      <kendo-grid-column field="localidad" title="Localidad" width="150">
+      </kendo-grid-column> 
+      <kendo-grid-column field="productCount" title="Productos Registrados" width="150">
       </kendo-grid-column> 
     </kendo-grid>   
-    <button class="success" (click)="OnClickCargarDatosEmpresa()"></button>
+    <div style="padding: 5px">
+    <button class="btn btn-primary" (click)="OnClickCargarDatosEmpresa()"> Cargar Datos Empresa</button>
+    </div>
     <form [formGroup]="formaEmpresa" (ngSubmit)="onSubmitFormaEmpresa()">
         <div class="form-group">
             <label for="nombreEmpresa">Nombre Empresa</label>

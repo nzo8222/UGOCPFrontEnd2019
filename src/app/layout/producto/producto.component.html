@@ -4,15 +4,13 @@
     <kendo-grid [data]="listaGridEmpresas" [height]="410" [selectable]="true"
       [selectable]="{ checkboxOnly: false, mode: 'single' }" [kendoGridSelectBy]="'idCompany'"
       [selectedKeys]="selectedKeysEmpresa">
-      <kendo-grid-column field="idCompany" title="ID" width="100">
-      </kendo-grid-column>
       <kendo-grid-column field="name" title="Nombre" width="150">
       </kendo-grid-column>
       <kendo-grid-column field="phoneNumber" title="Número de telefono" width="150">
       </kendo-grid-column>
       <kendo-grid-column field="address" title="Dirección" width="150">
       </kendo-grid-column>
-      <kendo-grid-column field="idLocalidad" title="ID Localidad" width="150">
+      <kendo-grid-column field="localidad" title="Localidad" width="150">
       </kendo-grid-column>
     </kendo-grid>
     <div class="form-inline" style="padding: 5px">
@@ -38,6 +36,8 @@
       <kendo-grid-column field="cuantityInKG" title="Cantidad en KG" width="150">
       </kendo-grid-column>
     </kendo-grid>
+    <div style="padding: 5px"></div>
+    <button class="btn btn-primary"(click)="OnClickCargarDatosProducto()">Cargar Datos Producto</button>
    </div>
     <form [formGroup]="formaProducto" (ngSubmit)="OnSubmitFormaProducto()">
       <div class="form-group">

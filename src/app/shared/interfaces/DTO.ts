@@ -68,7 +68,9 @@ export interface DTOEmpresa {
     phoneNumber: number;
     address: string;
     idLocalidad: number;
+    localidad: string;
     lstProduct: Product[];
+    productCount: number;
 }
 
 export interface Product {
@@ -153,4 +155,24 @@ export interface DTODatosUsuarioConLocalidad {
     curp: string;
     claveDeElector: string;
     numberINECredential: string;
+}
+
+export interface DTODatosLocacion{
+    estado: string;
+    municipio: string;
+    localidad: string;
+}
+
+export interface DTODatosClaveProductoServicioSat{
+    codigo: number;
+    descripcion: string;
+}
+
+export interface DTOEmpresaConLocalidadEnString {
+    idCompany: string;
+    name: string;
+    phoneNumber: number;
+    address: string;
+    localidad: string;
+    lstProduct: Product[];
 }

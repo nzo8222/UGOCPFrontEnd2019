@@ -136,4 +136,10 @@ export class FacadeService {
   public GetDatosUsuario(IdUsuario: string): Observable<RespuestaServidor> {
     return this.request.doGet<RespuestaServidor>(`Users/${IdUsuario}`);
   }
+  public GetDatosLocalidad(IdLocalidad: number): Observable<RespuestaServidor> {
+    return this.request.doGet<RespuestaServidor>(`localidad/GetLocationData/${IdLocalidad}`);
+  }
+  public GetNombreProductoSat(IdProductoSat: number): Observable<RespuestaServidor> {
+    return this.request.doGet<RespuestaServidor>(`products/GetCategoriaSat/${IdProductoSat}`);
+  }
 }

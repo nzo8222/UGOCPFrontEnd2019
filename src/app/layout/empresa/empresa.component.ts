@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FacadeService } from 'src/app/shared/services/facade.service';
-import { DTOEmpresa, EstadoDTO, MunicipioDTO, LocalidadDTO, DTOidMunicipio, DTOidEstado, DTOPostDatosEmpresa, DTOUpdateDatosEmpresa } from 'src/app/shared/interfaces/DTO';
+import { DTOEmpresa, EstadoDTO, MunicipioDTO, LocalidadDTO, DTOidMunicipio, DTOidEstado, DTOPostDatosEmpresa, DTOUpdateDatosEmpresa, DTODatosLocacion } from 'src/app/shared/interfaces/DTO';
 import { AuthService } from 'src/app/shared/guard/auth.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -15,7 +15,7 @@ export class EmpresaComponent implements OnInit {
   public lstProductos: any;
   public lstEstado: EstadoDTO[];
   public lstMunicipios: MunicipioDTO[];
-  public lstLocalidad: LocalidadDTO[];
+  public lstLocalidad: LocalidadDTO[] = [];
   public listaGridEmpresas: DTOEmpresa[] = [];
   public idxSelectedItem: number;
   public selectedKeys: string[] = [];
@@ -29,12 +29,32 @@ export class EmpresaComponent implements OnInit {
       this.notificationService.showError("Seleccioné una empresa valida.");
       return;
     }                                     
-    if(!this.listaGridEmpresas.findIndex(e => e.idCompany === this.selectedKeys[0]))
+    if(this.listaGridEmpresas.findIndex(e => e.name === this.selectedKeys[0]))
     {
       this.notificationService.showError("Seleccioné una empresa valida.");
       return;
     }
-    let empresa = this.listaGridEmpresas.find(e => e.idCompany === this.selectedKeys[0]);
+    let estaEmpresa = this.listaGridEmpresas.find(e => e.name ===this.selectedKeys[0]);
+    this.facade.GetDatosLocalidad(estaEmpresa.idLocalidad).subscribe(
+      res => {
+        if(res.exitoso)
+        {
+          let datos = res.payload as DTODatosLocacion;
+          this.formaEmpresa.controls['estado'].patchValue(datos.estado);
+          this.formaEmpresa.controls['municipio'].patchValue(datos.municipio);
+          this.formaEmpresa.controls['localidad'].patchValue(datos.localidad);
+          this.OnClickObtenerMunicipios();
+          this.OnClickObtenerLocalidad();
+          this.notificationService.showSuccess("Se cargaron los municipios.");
+        }else{
+          this.notificationService.showError(res.mensajeError);
+        }
+      }
+    );
+    let empresa = this.listaGridEmpresas.find(e => e.name === this.selectedKeys[0]);
+    this.formaEmpresa.controls['nombreEmpresa'].patchValue(empresa.name);
+    this.formaEmpresa.controls['numeroTelefono'].patchValue(empresa.phoneNumber);
+    this.formaEmpresa.controls['direccion'].patchValue(empresa.address);
     
   }
   ngOnInit() {
@@ -80,11 +100,11 @@ export class EmpresaComponent implements OnInit {
     //   return
     // }
     
-    const idx = this.listaGridEmpresas.findIndex(e => e.idCompany === this.selectedKeys[0]);
-
+    const idx = this.listaGridEmpresas.findIndex(e => e.name === this.selectedKeys[0]);
+    
     if (idx > -1) { this.idxSelectedItem = idx; }
     let empresa : DTOUpdateDatosEmpresa = {
-      idEmpresa : this.selectedKeys[0],
+      idEmpresa : this.listaGridEmpresas.find(e => e.name === this.selectedKeys[0]).idCompany,
       idUsuario : this.authService.getUserId(),
       address : '',
       idLocalidad: 0,
@@ -107,6 +127,7 @@ export class EmpresaComponent implements OnInit {
     );
     this.selectedKeys = [];
   }
+
   OnClickEditarEmpresa()
   {
     if(!this.listaGridEmpresas)
@@ -120,18 +141,19 @@ export class EmpresaComponent implements OnInit {
     //   return
     // }
     
-    const idx = this.listaGridEmpresas.findIndex(e => e.idCompany === this.selectedKeys[0]);
+    const idx = this.listaGridEmpresas.findIndex(e => e.name === this.selectedKeys[0]);
 
     if (idx > -1) { this.idxSelectedItem = idx; }
     if(this.idxSelectedItem > -1)
     {
       if(this.formaEmpresa.valid)
       {
+        
         let localidad = this.lstLocalidad.find(l => l.nombre === this.formaEmpresa.value.localidad);
-        let empresaSeleccionada = this.listaGridEmpresas.find(e => e.idCompany === this.selectedKeys[0]);
+        // let empresaSeleccionada = this.listaGridEmpresas.find(e => e.name === this.selectedKeys[0]);
         let modelEmpresa : DTOUpdateDatosEmpresa = {
           idUsuario: this.authService.getUserId(),
-          idEmpresa: empresaSeleccionada.idCompany,
+          idEmpresa: this.listaGridEmpresas.find(e => e.name === this.selectedKeys[0]).idCompany,
           name: this.formaEmpresa.value.nombreEmpresa,
           phoneNumber: this.formaEmpresa.value.numeroTelefono,
           address: this.formaEmpresa.value.direccion,
@@ -160,8 +182,6 @@ export class EmpresaComponent implements OnInit {
     }
     this.selectedKeys = [];
   }
-
-
 
   loadEstadoList() {
     this.facade.GetEstados().subscribe(
@@ -233,14 +253,14 @@ export class EmpresaComponent implements OnInit {
           this.notificationService.showError("No se encontraron empresas para este usuario.");
         }
       }
-    )
+    );
   }
 
-  handleFilter(filter: any) {
-    this.facade.GetListaProductosServiciosSAT(filter).subscribe(res => {
-      this.lstProductos = res.payload;
-    });
-  }
+  // handleFilter(filter: any) {
+  //   this.facade.GetListaProductosServiciosSAT(filter).subscribe(res => {
+  //     this.lstProductos = res.payload;
+  //   });
+  // }
 
   onSubmitFormaEmpresa() {
     if (!this.formaEmpresa.valid) {
