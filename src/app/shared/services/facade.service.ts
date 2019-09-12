@@ -107,7 +107,7 @@ export class FacadeService {
     return this.request.doPost<RespuestaServidor>(`Users/UpdateUser`, DatosUsuario);
   }
   public GetListaProductosServiciosSAT(filtro: string): Observable<RespuestaServidor> {
-    return this.request.doGet<RespuestaServidor>(`Products/${filtro}`);
+    return this.request.doGet<RespuestaServidor>(`Products/filter/${filtro}`);
   }
   public GetListaEmpresas(IdUsuario: string): Observable<RespuestaServidor> {
     return this.request.doGet<RespuestaServidor>(`Empresa/${IdUsuario}`);

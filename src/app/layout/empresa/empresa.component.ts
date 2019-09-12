@@ -43,8 +43,13 @@ export class EmpresaComponent implements OnInit {
           this.formaEmpresa.controls['estado'].patchValue(datos.estado);
           this.formaEmpresa.controls['municipio'].patchValue(datos.municipio);
           this.formaEmpresa.controls['localidad'].patchValue(datos.localidad);
+          this.esperawe = true;
           this.OnClickObtenerMunicipios();
-          this.OnClickObtenerLocalidad();
+          let interval = setInterval( () => {
+            this.esperawe = false;
+            clearInterval(interval);
+            this.OnClickObtenerLocalidad();
+          }, 500);
           this.notificationService.showSuccess("Se cargaron los municipios.");
         }else{
           this.notificationService.showError(res.mensajeError);

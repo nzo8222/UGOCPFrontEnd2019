@@ -40,11 +40,11 @@ export class ProductoComponent implements OnInit {
     {
       this.notificationService.showError("Seleccioné un producto valido.");
     }
-    if(!this.listaGridProductos.find(p => p.idProduct === this.selectedKeysProducto[0]))
+    if(!this.listaGridProductos.find(p => p.name === this.selectedKeysProducto[0]))
     {
       this.notificationService.showError("Seleccioné un producto valido.");
     }
-    let producto = this.listaGridProductos.find(p => p.idProduct === this.selectedKeysProducto[0]);
+    let producto = this.listaGridProductos.find(p => p.name === this.selectedKeysProducto[0]);
     this.formaProducto.controls['nombreProducto'].patchValue(producto.name);
     this.formaProducto.controls['calidad'].patchValue(producto.calidad);
     this.formaProducto.controls['inicioDeCosecha'].patchValue(this.formatDate(producto.startOfHarvest));
@@ -80,8 +80,8 @@ export class ProductoComponent implements OnInit {
       this.notificationService.showError("Es necesario dar click en ver productos de la empresa para agregar productos.");
       return;
     }
-    var empresaDelete = this.listaGridEmpresas.find(e => e.idCompany === this.empresaSeleccionada[0]);
-    var productoDelete = this.listaGridProductos.find(e => e.idProduct === this.selectedKeysProducto[0]);
+    var empresaDelete = this.listaGridEmpresas.find(e => e.name === this.empresaSeleccionada[0]);
+    var productoDelete = this.listaGridProductos.find(e => e.name === this.selectedKeysProducto[0]);
     if(!productoDelete)
     {
       this.notificationService.showError("Seleccione un producto.");
@@ -118,8 +118,8 @@ export class ProductoComponent implements OnInit {
       this.notificationService.showError("Es necesario dar click en ver productos de la empresa para agregar productos.");
       return;
     }
-    let empresa = this.listaGridEmpresas.find(e => e.idCompany === this.empresaSeleccionada[0]);
-    let producto = this.listaGridProductos.find(e => e.idProduct === this.selectedKeysProducto[0]);
+    let empresa = this.listaGridEmpresas.find(e => e.name === this.empresaSeleccionada[0]);
+    let producto = this.listaGridProductos.find(e => e.name === this.selectedKeysProducto[0]);
     if(!empresa)
     {
       this.notificationService.showError("Seleccione una empresa valida");
@@ -162,7 +162,7 @@ export class ProductoComponent implements OnInit {
       this.notificationService.showError("Es necesario dar click en ver productos de la empresa para agregar productos.");
       return;
     }
-    let empresa = this.listaGridEmpresas.find(e => e.idCompany === this.empresaSeleccionada[0]);
+    let empresa = this.listaGridEmpresas.find(e => e.name === this.empresaSeleccionada[0]);
     if(!empresa)
     {
       this.notificationService.showError("Seleccione una empresa valida");
@@ -247,12 +247,12 @@ export class ProductoComponent implements OnInit {
     //   return
     // }
     
-    const idx = this.listaGridEmpresas.findIndex(e => e.idCompany === this.selectedKeysEmpresa[0]);
-    let empresa = this.listaGridEmpresas.find(e => e.idCompany === this.selectedKeysEmpresa[0]);
+    const idx = this.listaGridEmpresas.findIndex(e => e.name === this.selectedKeysEmpresa[0]);
+    let empresa = this.listaGridEmpresas.find(e => e.name === this.selectedKeysEmpresa[0]);
     this.nombreEmpresaSeleccionada = empresa.name;
     if (idx > -1) { this.idxSelectedItem = idx; }
     if (this.idxSelectedItem > -1) {
-      let empresaSeleccionadaLocal = this.listaGridEmpresas.find(e => e.idCompany === this.selectedKeysEmpresa[0]);
+      let empresaSeleccionadaLocal = this.listaGridEmpresas.find(e => e.name === this.selectedKeysEmpresa[0]);
       let empresa: DTOGetDatosProducto = {
         idUsuario: this.authService.getUserId(),
         idEmpresa: empresaSeleccionadaLocal.idCompany
