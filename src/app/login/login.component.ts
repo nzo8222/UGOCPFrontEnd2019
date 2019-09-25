@@ -5,6 +5,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { FacadeService } from '../shared/services/facade.service';
 import { LoginDTO } from '../shared/interfaces/DTO';
 import { AuthService } from '../shared/guard/auth.service';
+import { NotificationService } from '../shared/services/notification.service';
 
 @Component({
     selector: 'app-login',
@@ -17,33 +18,34 @@ export class LoginComponent implements OnInit {
     constructor(
         private facadeService: FacadeService,
         public router: Router,
-        private authService: AuthService
-    ) {}
+        private authService: AuthService,
+        private notificationService: NotificationService
+    ) { }
 
     ngOnInit() {
         this.FormaLogIn = new FormGroup({
             'usuario': new FormControl(null, [Validators.required]),
             'password': new FormControl(null, [Validators.required])
-    })
+        })
     }
     onLoggedin() {
-         // Si no es valido regresa.
-         if (!this.FormaLogIn.valid) return;
+        // Si no es valido regresa.
+        if (!this.FormaLogIn.valid) { return; } else {
+            const login = this.FormaLogIn.value as LoginDTO;
 
-         const login = this.FormaLogIn.value as LoginDTO;
+            this.facadeService.Login(login).subscribe(
+                res => {
+                    if (!res.exitoso) {
+                        this.notificationService.showError(res.mensajeError);
+                        return;
+                    }
+                    this.authService.setSession(res.payload);
 
-         this.facadeService.Login(login).subscribe(
-            res => {
-                if(!res.exitoso) {
-                    console.log(res.mensajeError);
-                    return;
-                } 
-                this.authService.setSession(res.payload);
+                    // localStorage.setItem('isLoggedin', 'true');
 
-        // localStorage.setItem('isLoggedin', 'true');
-                
-        this.router.navigateByUrl('/dashboard');
-            }
-         );
+                    this.router.navigateByUrl('/dashboard');
+                }
+            );
+        }
     }
 }

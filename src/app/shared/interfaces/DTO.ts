@@ -76,11 +76,26 @@ export interface DTOEmpresa {
 export interface Product {
     idProduct: string;
     claveProductoServicio: number;
+    descripcionProductoServicio: string;
     name: String;
     calidad: String;
-    startOfHarvest: Date;
-    endOfHarvest: Date;
+    lstMonthsOfHarvest: MesConId[];
     cuantityInKG: number;
+}
+export interface ProductConNombreMes {
+    idProduct: string;
+    claveProductoServicio: number;
+    name: String;
+    calidad: String;
+    monthsName: String;
+    months: MesConId[];
+    cuantityInKG: number;
+    descripcionProductoServicio: string;
+}
+
+export interface MesConId{
+    id: string;
+    name: string;
 }
 
 export interface DTOPostDatosEmpresa {
@@ -111,9 +126,9 @@ export interface DTOPostDatosProducto {
     claveProductoServicio: string;
     name: String;
     calidad: String;
-    startOfHarvest: Date;
-    endOfHarvest: Date;
+    monthsOfHarvest: String[];
     cuantityInKG: number;
+    descripcionProductoServicio: string;
 }
 
 export interface DTOClaveProdServ{
@@ -131,6 +146,7 @@ export interface DTOUpdateDatosProducto {
     startOfHarvest: Date;
     endOfHarvest: Date;
     cuantityInKG: number;
+    descripcionProductoServicio: string;
 }
 
 export interface DTODeleteDatosProducto {

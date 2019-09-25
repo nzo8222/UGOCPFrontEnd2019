@@ -18,7 +18,7 @@
       </kendo-grid-column> 
     </kendo-grid>
     <div class="form-inline" style="padding: 5px">
-      <button class="btn btn-success" (click)="OnClickProducts()">Ver Productos</button>
+      <button class="btn btn-success" (click)="OnClickProducts()" [disabled]="!selectedKeysEmpresa[0]">Ver Productos</button>
     </div>
     <div *ngIf="listaGridProductos.length !== 0">
         <h2>Lista de Productos {{ nombreEmpresaSeleccionada }}</h2>
@@ -26,22 +26,20 @@
       [selectable]="{ checkboxOnly: false, mode: 'single' }" [kendoGridSelectBy]="'name'"
       [selectedKeys]="selectedKeysProducto">
       <!-- <kendo-grid-column field="idProduct" title="ID" width="100">
-      </kendo-grid-column> -->
+      </kendo-grid-column> --> 
       <kendo-grid-column field="name" title="Nombre" width="150">
       </kendo-grid-column>
-      <kendo-grid-column field="claveProductoServicio" title="clave SAT" width="150">
+      <kendo-grid-column field="descripcionProductoServicio" title="descripcion SAT" width="150">
       </kendo-grid-column>
       <kendo-grid-column field="calidad" title="Calidad" width="150">
       </kendo-grid-column>
-      <kendo-grid-column field="startOfHarvest" title="Inicio Cosecha" width="150">
-      </kendo-grid-column>
-      <kendo-grid-column field="endOfHarvest" title="Fin Cosecha" width="150">
+      <kendo-grid-column field="monthsName" title="Meses de cosecha" width="150">
       </kendo-grid-column>
       <kendo-grid-column field="cuantityInKG" title="Cantidad en KG" width="150">
       </kendo-grid-column>
     </kendo-grid>
     <div style="padding: 5px"></div>
-    <button class="btn btn-primary"(click)="OnClickCargarDatosProducto()">Cargar Datos Producto</button>
+    <button class="btn btn-primary"(click)="OnClickCargarDatosProducto()" >Cargar Datos Producto</button>
    </div>
     <form [formGroup]="formaProducto" (ngSubmit)="OnSubmitFormaProducto()">
       <div class="form-group">
@@ -70,21 +68,24 @@
         </label>
       </div>
 
-      <div class="form-group">
-        <label for="inicioDeCosecha">Inicio de cosecha</label>
-        <input type="date" id="inicioDeCosecha" class="form-control" formControlName="inicioDeCosecha">
-        <span *ngIf="!formaProducto.get('inicioDeCosecha').valid && formaProducto.get('inicioDeCosecha').touched"
-          class="help-block">Ingresa la
-          Inicio de cosecha</span>
+     
+        <label for="inicioDeCosecha">Meses de cosecha</label> 
+        <div class="form-inline">
+        <div *ngFor="let mes of meses">
+            
+        <label for="mesesDeCosecha" style="padding: 5px">
+          <input type="checkbox" [value]="mes" id="mes" formControlName="MesesDeCosecha" (input)="OnClickMes(mes)">{{mes}}
+        </label>
+      </div> 
       </div>
 
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label for="finDeCosecha">Fin de cosecha</label>
         <input type="date" id="finDeCosecha" class="form-control" formControlName="finDeCosecha">
         <span *ngIf="!formaProducto.get('finDeCosecha').valid && formaProducto.get('finDeCosecha').touched"
           class="help-block">Ingresa la
           Fin de cosecha</span>
-      </div>
+      </div> -->
 
       <div class="form-group">
         <label for="CantidadEnKG">Cantidad en KG</label>

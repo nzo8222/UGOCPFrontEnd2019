@@ -14,7 +14,7 @@ export class SidebarComponent implements OnInit {
     collapsed: boolean;
     showMenu: string;
     pushRightClass: string;
-    user: SessionModel;
+    role: string;
 
     @Output() collapsedEvent = new EventEmitter<boolean>();
 
@@ -37,7 +37,7 @@ export class SidebarComponent implements OnInit {
         this.pushRightClass = 'push-right';
 
         // Obtiene sesión actual.
-        this.authService.getRole();
+        this.role = this.authService.getRole();
     }
 
 
